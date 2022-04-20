@@ -1,24 +1,54 @@
-import { Form, Input, Button, Checkbox } from 'antd';
-import { UserOutlined, LockOutlined } from '@ant-design/icons';
-import { Typography } from 'antd';
-import './LoginPage.css'
-const { Title } = Typography;
+import { Form, Input, Button,Typography,notification} from "antd";
+import { UserOutlined, LockOutlined } from "@ant-design/icons";
+import "./LoginPage.css";
+import "./ApiInterceptors.js"
+import { useState } from "react";
+// import axios from "axios";
+import { defaultPost } from "./ApiInterceptors.js";
 
-function loginHandler(){
-  fetch('https://21-ex1-api.dev.3si.vn/auth/auth/login')
-  .then(function(response){
-    return response.json();
-  })
-  .then(function(data){
-    console.log(data)
-  })
-}
 
 const LoginForm = () => {
-  // const onFinish = (values) => {
-  //   console.log('Received values of form: ', values);
+  const { Title } = Typography;
+  const [user, setUser] = useState("");
+  const [password, setPassword] = useState("");
+  // const [msg, setMessage]= useState("test mess")
+  // notification.config({
+  //   maxCount: 1,
+  //   duration: 2,
+  // });
+  // const openNotificationWithIcon = (type) => {
+  //   notification[type]({
+  //     message: type,
+  //     description:msg
+  //   });
   // };
+  function loginHandler() {
+    const payload= {
+      userName: user,
+      password: password,
+    }
 
+    const loginApi = "https://21-ex1-api.dev.3si.vn/auth/auth/login";
+    defaultPost(loginApi,"POST",payload)
+    // localStorage.setItem("ex1-auth-token", response.data.data);
+    // axios
+    //   .post(loginApi, {
+    //     userName: user,
+    //     password: password,
+    //   })
+    //   .then(function (response) {
+    //     localStorage.setItem("ex1-auth-token", response.data.message);
+    //     // console.log(response.data.message)
+    //     setMessage("đăng nhập thành công")
+    //     openNotificationWithIcon('success')
+        
+    //   })
+    //   .catch(function (error) {
+    //     setMessage(error.response.data.message)
+    //     openNotificationWithIcon('error')
+    //   })
+
+  }
   return (
     <Form
       name="normal_login"
@@ -26,24 +56,28 @@ const LoginForm = () => {
       initialValues={{
         remember: true,
       }}
-      // onFinish={loginHandler}
+      onFinish={loginHandler}
     >
       <Form.Item>
-        <Title level={3} className="title">Đăng nhập</Title>
+        <Title level={3} className="title">
+          Đăng nhập
+        </Title>
       </Form.Item>
       <Form.Item
         name="username"
         rules={[
           {
             required: true,
-            message: 'Tài khoản không được bỏ trống',
+            message: "Tài khoản không được bỏ trống",
           },
         ]}
       >
         <Input
-          prefix={<UserOutlined className="site-form-item-icon" />} 
-          placeholder="Tài khoản" 
+          prefix={<UserOutlined className="site-form-item-icon" />}
+          placeholder="Tài khoản"
           size="large"
+          value={user}
+          onChange={(e) => setUser(e.target.value)}
         />
       </Form.Item>
       <Form.Item
@@ -51,7 +85,7 @@ const LoginForm = () => {
         rules={[
           {
             required: true,
-            message: 'Mật khẩu không được để trống',
+            message: "Mật khẩu không được để trống",
           },
         ]}
       >
@@ -60,15 +94,18 @@ const LoginForm = () => {
           type="password"
           placeholder="Mật khẩu"
           size="large"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
         />
       </Form.Item>
 
       <Form.Item>
-        <Button 
-          type="primary" 
-          htmlType="submit" 
-          className="login-form-button" 
-          block size="large"
+        <Button
+          type="primary"
+          htmlType="submit"
+          className="login-form-button"
+          block
+          size="large"
         >
           Đăng nhập
         </Button>
@@ -78,13 +115,13 @@ const LoginForm = () => {
 };
 
 function LoginPage() {
-    return (
-      <div className='login-page'>
-          <div className='form-wrapper'>
-            <LoginForm/>
-          </div>
+  return (
+    <div className="login-page">
+      <div className="form-wrapper">
+        <LoginForm />
       </div>
-    );
+    </div>
+  );
 }
-  
-export default LoginPage
+
+export default LoginPage;
