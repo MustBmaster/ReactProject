@@ -1,0 +1,29 @@
+* {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+.login-page {
+  width: 100vw;
+  height: 100vh;
+  background-image: url("@assets/EVN.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding: 90px;
+  display: flex;
+  justify-content: flex-end;
+  box-sizing: border-box;
+  align-items: center;
+}
+.form-wrapper {
+  min-width: 445px;
+  min-height: 560px;
+  padding: 40px;
+  background-color: white;
+  border-radius: 5px;
+  box-shadow: rgb(0 21 71 / 20%) 0px 12px 22px -6px,
+    rgb(91 92 96 / 20%) 0px 14px 64px -4px;
+}
+.title {
+  text-align: center;
+}

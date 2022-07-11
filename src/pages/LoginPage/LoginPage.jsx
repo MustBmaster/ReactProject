@@ -1,53 +1,37 @@
-import { Form, Input, Button,Typography,notification} from "antd";
-import { UserOutlined, LockOutlined } from "@ant-design/icons";
-import "./LoginPage.css";
-import "./ApiInterceptors.js"
+import { LockOutlined, UserOutlined } from "@ant-design/icons";
+import { defaultPost } from "@pages/ApiInterceptors";
+import { Button, Form, Input, Typography } from "antd";
 import { useState } from "react";
-// import axios from "axios";
-import { defaultPost } from "./ApiInterceptors.js";
-
+import { useDispatch } from "react-redux";
+import { logIn } from "@slices/LoginSlice";
+import "../ApiInterceptors.js";
+import "./LoginPage.css";
 
 const LoginForm = () => {
   const { Title } = Typography;
   const [user, setUser] = useState("");
   const [password, setPassword] = useState("");
-  // const [msg, setMessage]= useState("test mess")
-  // notification.config({
-  //   maxCount: 1,
-  //   duration: 2,
-  // });
-  // const openNotificationWithIcon = (type) => {
-  //   notification[type]({
-  //     message: type,
-  //     description:msg
-  //   });
-  // };
+  const dispatch = useDispatch();
+  // const navigate = useNavigate();
+  // console.log(isLogin);
   function loginHandler() {
-    const payload= {
+    const payload = {
       userName: user,
       password: password,
-    }
+    };
 
     const loginApi = "https://21-ex1-api.dev.3si.vn/auth/auth/login";
-    defaultPost(loginApi,"POST",payload)
-    // localStorage.setItem("ex1-auth-token", response.data.data);
-    // axios
-    //   .post(loginApi, {
-    //     userName: user,
-    //     password: password,
-    //   })
-    //   .then(function (response) {
-    //     localStorage.setItem("ex1-auth-token", response.data.message);
-    //     // console.log(response.data.message)
-    //     setMessage("đăng nhập thành công")
-    //     openNotificationWithIcon('success')
-        
-    //   })
-    //   .catch(function (error) {
-    //     setMessage(error.response.data.message)
-    //     openNotificationWithIcon('error')
-    //   })
-
+    defaultPost(loginApi, "POST", payload)
+      .then(function (response) {
+        if (response && response.data && response.data.data) {
+          localStorage.setItem("ex1-auth-token", response.data.data);
+          dispatch(logIn());
+          // console.log(response);
+        }
+      })
+      .catch(function (err) {
+        console.log(err);
+      });
   }
   return (
     <Form
